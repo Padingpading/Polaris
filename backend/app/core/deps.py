@@ -11,9 +11,11 @@ from app.core.exceptions import ForbiddenException, UnauthorizedException
 from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.user import User
+from app.repositories.movie_repository import MovieRepository
 from app.repositories.role_repository import RoleRepository
 from app.repositories.user_repository import UserRepository
 from app.services.auth_service import AuthService
+from app.services.movie_service import MovieService
 from app.services.role_service import RoleService
 from app.services.user_service import UserService
 
@@ -74,3 +76,7 @@ def get_user_service(db: Annotated[Session, Depends(get_db)]) -> UserService:
 
 def get_role_service(db: Annotated[Session, Depends(get_db)]) -> RoleService:
     return RoleService(RoleRepository(db))
+
+
+def get_movie_service(db: Annotated[Session, Depends(get_db)]) -> MovieService:
+    return MovieService(MovieRepository(db))

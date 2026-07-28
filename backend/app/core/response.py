@@ -15,20 +15,11 @@ class ApiResponse(BaseModel, Generic[T]):
     data: Optional[T] = None
 
 
-class PageResult(BaseModel, Generic[T]):
-    """Paginated list payload."""
-
-    items: list[T]
-    total: int
-    page: int
-    page_size: int
+def success(data: Any = None, message: str = "ok") -> ApiResponse[Any]:
+    """Build a successful typed response."""
+    return ApiResponse(code=0, message=message, data=data)
 
 
-def success(data: Any = None, message: str = "ok") -> dict[str, Any]:
-    """Build a successful response dict."""
-    return {"code": 0, "message": message, "data": data}
-
-
-def fail(message: str, *, code: int = 1, data: Any = None) -> dict[str, Any]:
-    """Build a failed response dict."""
-    return {"code": code, "message": message, "data": data}
+def fail(message: str, *, code: int = 1, data: Any = None) -> ApiResponse[Any]:
+    """Build a failed typed response."""
+    return ApiResponse(code=code, message=message, data=data)

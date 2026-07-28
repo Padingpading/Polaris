@@ -94,3 +94,39 @@ export interface RoleUpdatePayload {
   description?: string
   permission_ids?: number[]
 }
+
+export interface MovieItem {
+  id: number
+  title: string
+  director?: string | null
+  genre?: string | null
+  release_year?: number | null
+  duration_minutes?: number | null
+  rating?: number | string | null
+  description?: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface MovieCreatePayload {
+  title: string
+  director?: string
+  genre?: string
+  release_year?: number
+  duration_minutes?: number
+  rating?: number
+  description?: string
+  is_active: boolean
+}
+
+export interface MovieUpdatePayload {
+  title?: string
+  director?: string
+  genre?: string
+  release_year?: number
+  duration_minutes?: number
+  rating?: number
+  description?: string
+  is_active?: boolean
+}

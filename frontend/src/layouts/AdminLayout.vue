@@ -21,6 +21,10 @@
           <el-icon><Key /></el-icon>
           <span>角色管理</span>
         </el-menu-item>
+        <el-menu-item v-if="authStore.hasPermission('movie:list')" index="/movies">
+          <el-icon><Film /></el-icon>
+          <span>电影管理</span>
+        </el-menu-item>
       </el-menu>
     </aside>
 

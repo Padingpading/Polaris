@@ -34,6 +34,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/role/RoleListView.vue'),
         meta: { title: '角色管理', permission: 'role:list' },
       },
+      {
+        path: 'movies',
+        name: 'Movies',
+        component: () => import('@/views/movie/MovieListView.vue'),
+        meta: { title: '电影管理', permission: 'movie:list' },
+      },
     ],
   },
   {

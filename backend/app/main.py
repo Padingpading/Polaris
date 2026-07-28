@@ -1,5 +1,15 @@
 """FastAPI application entrypoint."""
 
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+# Ensure `backend/` is on sys.path so `import app` works in PyCharm.
+_BACKEND_ROOT = Path(__file__).resolve().parent.parent
+if str(_BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(_BACKEND_ROOT))
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -73,7 +83,7 @@ app.add_middleware(
 def app_exception_handler(_: Request, exc: AppException) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,
-        content=fail(exc.message, code=exc.code, data=exc.details),
+        content=fail(exc.message, code=exc.code, data=exc.details).model_dump(),
     )
 
 
@@ -83,7 +93,7 @@ def validation_exception_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=422,
-        content=fail("Validation error", code=42200, data=exc.errors()),
+        content=fail("Validation error", code=42200, data=exc.errors()).model_dump(),
     )
 
 
@@ -107,4 +117,5 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=8000,
         reload=settings.debug,
+        reload_dirs=[str(_BACKEND_ROOT)],
     )

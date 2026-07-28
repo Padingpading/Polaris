@@ -6,8 +6,6 @@ __pycache__/
 venv/
 .env
 *.db
-.venv/
-venv/
 
 # Node
 node_modules/
@@ -19,6 +17,9 @@ dist/
 .idea/
 .vscode/
 *.swp
+# Keep shared PyCharm run configs
+!.run/
+!.run/**
 
 # Logs
 *.log

@@ -45,7 +45,7 @@ DATABASE_URL=mysql+pymysql://user:password@host:3306/polaris?charset=utf8mb4
 ### 1. 后端
 
 ```bash
-cd backend
+# 在项目根目录 Polaris 创建/使用虚拟环境
 python -m venv .venv
 
 # Windows
@@ -54,8 +54,9 @@ python -m venv .venv
 # macOS / Linux
 # source .venv/bin/activate
 
-pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+pip install -r backend/requirements.txt
+cd backend
+python main.py
 ```
 
 接口文档：http://127.0.0.1:8000/docs
