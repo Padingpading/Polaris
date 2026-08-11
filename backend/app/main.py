@@ -22,6 +22,7 @@ from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.exceptions import AppException
 from app.core.response import fail
+from app.core.validation import format_validation_message
 from app.db.base import Base
 from app.db.init_data import init_db
 from app.db.session import SessionLocal, engine
