@@ -38,18 +38,25 @@ def _ensure_database() -> None:
 
     db_part = db_url.rsplit("/", 1)[-1]
     db_name = db_part.split("?", 1)[0]
-    server_url = f"{db_url.rsplit('/', 1)[0]}/mysql"
+    # Connect without selecting a privileged system schema; app users often
+    # cannot access the `mysql` database.
+    server_url = f"{db_url.rsplit('/', 1)[0]}/"
 
     bootstrap = create_engine(server_url, pool_pre_ping=True, future=True)
-    with bootstrap.connect() as conn:
-        conn.execute(
-            text(
-                f"CREATE DATABASE IF NOT EXISTS `{db_name}` "
-                "DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+    try:
+        with bootstrap.connect() as conn:
+            conn.execute(
+                text(
+                    f"CREATE DATABASE IF NOT EXISTS `{db_name}` "
+                    "DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                )
             )
-        )
-        conn.commit()
-    bootstrap.dispose()
+            conn.commit()
+    except Exception:
+        # polaris@% may lack CREATE privilege; target DB should already exist.
+        pass
+    finally:
+        bootstrap.dispose()
 
 
 @asynccontextmanager

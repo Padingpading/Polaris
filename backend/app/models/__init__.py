@@ -1,5 +1,6 @@
 """ORM models package."""
 
+from app.models.actor import Actor, ActorGender
 from app.models.movie import Movie
 from app.models.permission import Permission
 from app.models.role import Role, role_permission, user_role
@@ -10,6 +11,8 @@ __all__ = [
     "Role",
     "Permission",
     "Movie",
+    "Actor",
+    "ActorGender",
     "user_role",
     "role_permission",
 ]
