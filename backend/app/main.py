@@ -87,6 +87,15 @@ app.add_middleware(
 )
 
 
+@app.exception_handler(Exception)
+def exception_handler(_: Request, exc: Exception) -> JSONResponse:
+    # Plain Exception has no status_code/message/code/details (those are AppException only).
+    return JSONResponse(
+        status_code=500,
+        content=fail("服务器内部异常", code=500).model_dump(),
+    )
+
+
 @app.exception_handler(AppException)
 def app_exception_handler(_: Request, exc: AppException) -> JSONResponse:
     return JSONResponse(

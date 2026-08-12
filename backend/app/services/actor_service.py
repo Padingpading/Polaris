@@ -14,6 +14,7 @@ class ActorService:
 
     def create_actor(self, payload: ActorCreate) -> bool:
         actor = Actor(**payload.model_dump())
+        1/0
         actor.code = snowflake_id()
         self.actor_repo.save(actor)
         return True

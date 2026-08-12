@@ -15,7 +15,7 @@ class ApiResponse(BaseModel, Generic[T]):
     data: Optional[T] = None
 
 
-def success(data: Any = None, message: str = "ok") -> ApiResponse[Any]:
+def success(data: Any = None, message: str = "") -> ApiResponse[Any]:
     """Build a successful typed response."""
     return ApiResponse(code=0, message=message, data=data)
 

@@ -8,7 +8,7 @@ class AppException(Exception):
 
     def __init__(
         self,
-        message: str = "Internal server error",
+        message: str = "Internal serve111r error",
         *,
         code: int = 50000,
         status_code: int = 500,
