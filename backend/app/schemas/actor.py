@@ -2,30 +2,99 @@
 
 from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Optional
+from typing import Annotated, Optional
 
 from pydantic import BaseModel, Field
+
+from app.schemas.common import int_range, str_length
 
 
 class ActorCreate(BaseModel):
     """Create actor request."""
 
-    # code: str = Field(..., min_length=1, max_length=32)
-    # name: str = Field(..., min_length=1, max_length=64)
-    # stage_name: str = Field(default="", max_length=64)
-    # tags: str = Field(default="", max_length=4080)
-    # bio: str = Field(default="")
-    # gender: int = Field(default=0, ge=0, le=3)
-    # is_active: bool = True
-    age: int = Field(default=0, ge=0, le=150)
-    # fan_count: int = Field(default=0, ge=0)
-    # view_count: int = Field(default=0, ge=0)
-    # height_cm: Decimal = Field(default=Decimal("0.00"))
-    # rating: Decimal = Field(default=Decimal("0.00"))
-    # birth_date: Optional[date] = None
-    # debut_time: Optional[time] = None
-    # last_login_at: Optional[datetime] = None
-    #
+    name: Annotated[
+        str,
+        Field(default=...),
+        str_length(1, 64, "姓名长度须在1~64个字符之间"),
+    ]
+    stage_name: Annotated[
+        str,
+        Field(default=""),
+        str_length(0, 64, "艺名最多64个字符"),
+    ]
+    age: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 150, "年龄必须在0~150岁之间，请填写真实年龄"),
+    ]
+    fan_count: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 9_000_000_000, "粉丝数必须为大于等于0的整数"),
+    ]
+    view_count: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 9_000_000_000, "浏览量必须为大于等于0的整数"),
+    ]
+    tags: str = ""
+    bio: Annotated[
+        str,
+        Field(default=""),
+        str_length(0, 200, "简介的字数最大是200"),
+    ]
+    gender_desc: str = ""
+    height_cm: float = 0.0
+    rating: float = 0.0
+    debut_time: str = ""
+    birth_date: str = ""
+
+
+class ActorUpdate(BaseModel):
+    """Update actor request."""
+
+    code: Annotated[
+        str,
+        Field(default=...),
+        str_length(1, 32, "演员编码不能为空"),
+    ]
+    name: Annotated[
+        str,
+        Field(default=...),
+        str_length(1, 64, "姓名长度须在1~64个字符之间"),
+    ]
+    stage_name: Annotated[
+        str,
+        Field(default=""),
+        str_length(0, 64, "艺名最多64个字符"),
+    ]
+    age: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 150, "年龄必须在0~150岁之间，请填写真实年龄"),
+    ]
+    fan_count: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 9_000_000_000, "粉丝数必须为大于等于0的整数"),
+    ]
+    view_count: Annotated[
+        int,
+        Field(default=0),
+        int_range(0, 9_000_000_000, "浏览量必须为大于等于0的整数"),
+    ]
+    tags: str = ""
+    bio: Annotated[
+        str,
+        Field(default=""),
+        str_length(0, 200, "简介的字数最大是200"),
+    ]
+    gender_desc: str = ""
+    height_cm: float = 0.0
+    rating: float = 0.0
+    debut_time: str = ""
+    birth_date: str = ""
+
 
 class ActorOut(BaseModel):
     """Actor response."""

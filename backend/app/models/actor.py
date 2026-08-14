@@ -5,6 +5,7 @@ from decimal import Decimal
 from enum import IntEnum
 from typing import Optional
 
+import sqlalchemy
 from sqlalchemy import (
     BigInteger,
     Boolean,
@@ -58,42 +59,42 @@ class Actor(Base):
         autoincrement=True,
         comment="主键",
     )
-    # code: Mapped[str] = mapped_column(
-    #     String(32),
-    #     nullable=False,
-    #     server_default=text("''"),
-    #     comment="演员编码",
-    # )
-    # name: Mapped[str] = mapped_column(
-    #     String(64),
-    #     nullable=False,
-    #     server_default=text("''"),
-    #     comment="真实姓名",
-    # )
-    # stage_name: Mapped[str] = mapped_column(
-    #     String(64),
-    #     nullable=False,
-    #     server_default=text("''"),
-    #     comment="艺名",
-    # )
-    # tags: Mapped[str] = mapped_column(
-    #     String(4080),
-    #     nullable=False,
-    #     server_default=text("''"),
-    #     comment="标签JSON（截断存储）",
-    # )
-    # bio: Mapped[str] = mapped_column(
-    #     Text,
-    #     nullable=False,
-    #     comment="简介",
-    # )
-    # gender: Mapped[int] = mapped_column(
-    #     TINYINT,
-    #     nullable=False,
-    #     default=int(ActorGender.UNKNOWN),
-    #     server_default=text("0"),
-    #     comment="性别:0未知1男2女3其他",
-    # )
+    code: Mapped[str] = mapped_column(
+        String(32),
+        nullable=False,
+        server_default=text("''"),
+        comment="演员编码",
+    )
+    name: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False,
+        server_default=text("''"),
+        comment="真实姓名",
+    )
+    stage_name: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False,
+        server_default=text("''"),
+        comment="艺名",
+    )
+    tags: Mapped[str] = mapped_column(
+        String(4080),
+        nullable=False,
+        server_default=text("''"),
+        comment="标签JSON（截断存储）",
+    )
+    bio: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+        comment="简介",
+    )
+    gender: Mapped[int] = mapped_column(
+        TINYINT,
+        nullable=False,
+        default=int(ActorGender.UNKNOWN),
+        server_default=text("0"),
+        comment="性别:0未知1男2女3其他",
+    )
     # is_active: Mapped[bool] = mapped_column(
     #     Boolean,
     #     nullable=False,
@@ -107,39 +108,39 @@ class Actor(Base):
         server_default=text("0"),
         comment="年龄",
     )
-    # fan_count: Mapped[int] = mapped_column(
-    #     BigInteger,
-    #     nullable=False,
-    #     server_default=text("0"),
-    #     comment="粉丝数",
-    # )
-    # view_count: Mapped[int] = mapped_column(
-    #     BIGINT(unsigned=True),
-    #     nullable=False,
-    #     server_default=text("0"),
-    #     comment="浏览量",
-    # )
-    # height_cm: Mapped[Decimal] = mapped_column(
-    #     Numeric(10, 2),
-    #     nullable=False,
-    #     server_default=text("0.00"),
-    #     comment="身高厘米",
-    # )
-    # rating: Mapped[Decimal] = mapped_column(
-    #     Numeric(10, 2),
-    #     nullable=False,
-    #     server_default=text("0.00"),
-    #     comment="评分",
-    # )
-    # birth_date: Mapped[Optional[date]] = mapped_column(
-    #     Date, nullable=True, comment="出生日期"
-    # )
-    # debut_time: Mapped[Optional[time]] = mapped_column(
-    #     Time, nullable=True, comment="出道时间点"
-    # )
-    # last_login_at: Mapped[Optional[datetime]] = mapped_column(
-    #     DateTime, nullable=True, comment="最近登录时间"
-    # )
+    fan_count: Mapped[int] = mapped_column(
+        BigInteger,
+        nullable=False,
+        server_default=text("0"),
+        comment="粉丝数",
+    )
+    view_count: Mapped[int] = mapped_column(
+        BIGINT(unsigned=True),
+        nullable=False,
+        server_default=text("0"),
+        comment="浏览量",
+    )
+    height_cm: Mapped[Decimal] = mapped_column(
+        Numeric(10, 2),
+        nullable=False,
+        server_default=text("0.00"),
+        comment="身高厘米",
+    )
+    rating: Mapped[Decimal] = mapped_column(
+        Numeric(10, 2),
+        nullable=False,
+        server_default=text("0.00"),
+        comment="评分",
+    )
+    birth_date: Mapped[Optional[date]] = mapped_column(
+        Date, nullable=True, comment="出生日期"
+    )
+    debut_time: Mapped[Optional[time]] = mapped_column(
+        Time, nullable=True, comment="出道时间点"
+    )
+    last_login_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime, nullable=True, comment="最近登录时间"
+    )
     # avatar_blob: Mapped[Optional[bytes]] = mapped_column(
     #     LargeBinary, nullable=True, comment="头像二进制"
     # )
@@ -156,3 +157,5 @@ class Actor(Base):
     #     server_onupdate=func.current_timestamp(),
     #     comment="最后修改时间",
     # )
+
+

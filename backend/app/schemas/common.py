@@ -1,10 +1,33 @@
 """Common schema primitives."""
 
-from typing import Generic, Optional, TypeVar
+from typing import Annotated, Generic, TypeVar
 
-from pydantic import BaseModel, Field
+from pydantic import AfterValidator, BaseModel, Field
 
 T = TypeVar("T")
+
+
+def int_range(ge: int, le: int, message: str) -> AfterValidator:
+    """Integer range check with a concrete Chinese error message."""
+
+    def _check(value: int) -> int:
+        if value < ge or value > le:
+            raise ValueError(message)
+        return value
+
+    return AfterValidator(_check)
+
+
+def str_length(min_len: int, max_len: int, message: str) -> AfterValidator:
+    """String length check with a concrete Chinese error message."""
+
+    def _check(value: str) -> str:
+        n = len(value)
+        if n < min_len or n > max_len:
+            raise ValueError(message)
+        return value
+
+    return AfterValidator(_check)
 
 
 class PageQuery(BaseModel):

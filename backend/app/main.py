@@ -22,7 +22,7 @@ from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.exceptions import AppException
 from app.core.response import fail
-from app.core.validation import format_validation_message
+from app.core.validation import format_validation_errors, format_validation_message
 from app.db.base import Base
 from app.db.init_data import init_db
 from app.db.session import SessionLocal, engine
@@ -110,7 +110,11 @@ def validation_exception_handler(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=422,
-        content=fail("Validation error", code=42200, data=exc.errors()).model_dump(),
+        content=fail(
+            format_validation_message(exc),
+            code=42200,
+            data=format_validation_errors(exc),
+        ).model_dump(),
     )
 
 
