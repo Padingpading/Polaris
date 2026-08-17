@@ -95,13 +95,13 @@ class Actor(Base):
         server_default=text("0"),
         comment="性别:0未知1男2女3其他",
     )
-    # is_active: Mapped[bool] = mapped_column(
-    #     Boolean,
-    #     nullable=False,
-    #     default=True,
-    #     server_default=text("1"),
-    #     comment="是否启用",
-    # )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default=text("1"),
+        comment="是否启用",
+    )
     age: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
@@ -141,21 +141,24 @@ class Actor(Base):
     last_login_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime, nullable=True, comment="最近登录时间"
     )
-    # avatar_blob: Mapped[Optional[bytes]] = mapped_column(
-    #     LargeBinary, nullable=True, comment="头像二进制"
-    # )
-    # create_time: Mapped[datetime] = mapped_column(
-    #     TIMESTAMP,
-    #     nullable=False,
-    #     server_default=func.current_timestamp(),
-    #     comment="创建时间",
-    # )
-    # update_time: Mapped[datetime] = mapped_column(
-    #     TIMESTAMP,
-    #     nullable=False,
-    #     server_default=func.current_timestamp(),
-    #     server_onupdate=func.current_timestamp(),
-    #     comment="最后修改时间",
-    # )
+    status: Mapped[int] = mapped_column(
+        TINYINT(unsigned=True),
+        nullable=False,
+        server_default=text("0"),
+        comment="状态",
+    )
+    create_time: Mapped[datetime] = mapped_column(
+        TIMESTAMP,
+        nullable=False,
+        server_default=func.current_timestamp(),
+        comment="创建时间",
+    )
+    update_time: Mapped[datetime] = mapped_column(
+        TIMESTAMP,
+        nullable=False,
+        server_default=func.current_timestamp(),
+        server_onupdate=func.current_timestamp(),
+        comment="最后修改时间",
+    )
 
 

@@ -10,6 +10,7 @@ from app.core.exceptions import AppException
 from app.models.actor import Actor
 from app.repositories.actor_repository import ActorRepository
 from app.schemas.actor import ActorCreate, ActorUpdate, ActorOut
+from app.schemas.common import PageData
 from app.utls.random_utls import snowflake_id
 
 
@@ -47,6 +48,8 @@ def _parse_debut_time(debut_time: str):
     if " " in debut_time:
         return datetime.strptime(debut_time, "%Y-%m-%d %H:%M:%S").time()
     return datetime.strptime(debut_time, "%H:%M:%S").time()
+
+
 
 
 class ActorService:
@@ -102,11 +105,51 @@ class ActorService:
             raise AppException("更新失败")
         return True
 
-    def find_by_code(self, code):
-        # 根据code查询
+    def find_by_code(self, code: str) -> ActorOut:
         if not code:
             raise AppException("code 不能为空")
         actor = self.actor_repo.find_by_code(code)
-        resp = ActorOut()
+        if actor is None:
+            raise AppException("未查询到演员信息")
 
-        pass
+        return ActorOut(
+            id=actor.id,
+            code=actor.code,
+            name=actor.name,
+            stage_name=actor.stage_name,
+            tags=actor.tags,
+            bio=actor.bio,
+            gender=actor.gender,
+            is_active=actor.is_active,
+            age=actor.age,
+            fan_count=actor.fan_count,
+            view_count=actor.view_count,
+            height_cm=actor.height_cm,
+            rating=actor.rating,
+            birth_date=actor.birth_date,
+            debut_time=actor.debut_time,
+            last_login_at=actor.last_login_at,
+            create_time=actor.create_time,
+            update_time=actor.update_time,
+        )
+    def delete_by_code(self, code: str) -> bool:
+        if not code:
+            raise AppException("code 不能为空")
+        ok = self.actor_repo.delete_by_code(code)
+        if not ok:
+            raise AppException("未查询到演员信息或删除失败")
+        return True
+
+    def page_list(self,name, page_no: int, page_size: int) -> PageData[ActorOut]:
+        offset = (page_no - 1) * page_size
+        resp = self.actor_repo.page_list_query(name=name,offset=offset,limit= page_size)
+        list = resp[0]
+        total = resp[1]
+        print(total)
+        # items, total = self.actor_repo.page_list(offset=offset, limit=page_size)
+        return PageData(
+            items= list,
+            total=total,
+            page=page_no,
+            page_size=page_size,
+        )

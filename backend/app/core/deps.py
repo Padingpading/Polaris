@@ -13,11 +13,13 @@ from app.db.session import get_db
 from app.models.user import User
 from app.repositories.actor_repository import ActorRepository
 from app.repositories.movie_repository import MovieRepository
+from app.repositories.proxy_ip_pool_repository import ProxyIpPoolRepository
 from app.repositories.role_repository import RoleRepository
 from app.repositories.user_repository import UserRepository
 from app.services.actor_service import ActorService
 from app.services.auth_service import AuthService
 from app.services.movie_service import MovieService
+from app.services.proxy_ip_pool_service import ProxyIpPoolService
 from app.services.role_service import RoleService
 from app.services.user_service import UserService
 
@@ -85,3 +87,9 @@ def get_movie_service(db: Annotated[Session, Depends(get_db)]) -> MovieService:
 
 def get_actor_service(db: Annotated[Session, Depends(get_db)]) -> ActorService:
     return ActorService(ActorRepository(db))
+
+
+def get_proxy_ip_pool_service(
+    db: Annotated[Session, Depends(get_db)],
+) -> ProxyIpPoolService:
+    return ProxyIpPoolService(ProxyIpPoolRepository(db))
