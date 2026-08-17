@@ -29,5 +29,3 @@ class ActorRepository:
         result = self.db.execute(stmt)
         self.db.flush()
         return (result.rowcount or 0) > 0
-
-

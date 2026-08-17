@@ -98,7 +98,6 @@ class ActorUpdate(BaseModel):
 
 class ActorOut(BaseModel):
     """Actor response."""
-
     id: int
     code: str
     name: str

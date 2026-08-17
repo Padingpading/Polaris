@@ -9,7 +9,7 @@ from decimal import Decimal
 from app.core.exceptions import AppException
 from app.models.actor import Actor
 from app.repositories.actor_repository import ActorRepository
-from app.schemas.actor import ActorCreate, ActorUpdate
+from app.schemas.actor import ActorCreate, ActorUpdate, ActorOut
 from app.utls.random_utls import snowflake_id
 
 
@@ -101,3 +101,12 @@ class ActorService:
         if not ok:
             raise AppException("更新失败")
         return True
+
+    def find_by_code(self, code):
+        # 根据code查询
+        if not code:
+            raise AppException("code 不能为空")
+        actor = self.actor_repo.find_by_code(code)
+        resp = ActorOut()
+
+        pass
