@@ -14,7 +14,7 @@ _TOKEN = (
 )
 
 
-def query_ip_page(page_no: int, page_size: int) -> list[XiuXiuOrder]:
+def query_ip_page(page_no: int, page_size: int) -> tuple[int, list[XiuXiuOrder]]:
     url = f"{_BASE_URL}?page={page_no}&size={page_size}"
     resp = requests.get(
         url=url,
@@ -23,4 +23,6 @@ def query_ip_page(page_no: int, page_size: int) -> list[XiuXiuOrder]:
     )
     resp.raise_for_status()
     rows = resp.json().get("data", {}).get("rows") or []
-    return [XiuXiuOrder.model_validate(item) for item in rows]
+    total = resp.json().get("total", 0)
+    return (total, [XiuXiuOrder(**item) for item in rows])
+

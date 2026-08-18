@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import json
 from typing import Optional
 
+from app.client.resp.xiu_xiu_ip import XiuXiuOrder
+from app.client.xiu_xiu_ip_client import query_ip_page
 from app.core.exceptions import AppException
 from app.models.proxy_ip_pool import ProxyIpPool
 from app.repositories.proxy_ip_pool_repository import ProxyIpPoolRepository
@@ -62,11 +65,11 @@ class ProxyIpPoolService:
         return True
 
     def page_list(
-        self,
-        page_no: int,
-        page_size: int,
-        keyword: Optional[str] = None,
-        usage_status: Optional[bool] = None,
+            self,
+            page_no: int,
+            page_size: int,
+            keyword: Optional[str] = None,
+            usage_status: Optional[bool] = None,
     ) -> PageData[ProxyIpPoolOut]:
         offset = (page_no - 1) * page_size
         items, total = self.repo.page_list(
@@ -81,3 +84,21 @@ class ProxyIpPoolService:
             page=page_no,
             page_size=page_size,
         )
+    @staticmethod
+    def ip_pool_sync() -> bool:
+        page = 1
+        page_size = 10
+        total, ip_list = query_ip_page(page, page_size)
+        if not total or total == 0:
+            pass
+        total_page = int(total / page_size + 1)
+        for index_page in range(1,total_page+1):
+            total, ip_list[XiuXiuOrder] = query_ip_page(index_page, page_size)
+            if not ip_list:
+                continue
+            for ip in ip_list:
+                print(json.dumps(ip.to_dict()))
+        pass
+
+s = ProxyIpPoolService.ip_pool_sync()
+s
