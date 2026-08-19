@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-import json
 from typing import Optional
 
-from sqlalchemy.util import format_argspec_init
 
-from app.client.resp.xiu_xiu_ip import XiuXiuOrder
-from app.client.xiu_xiu_ip_client import query_ip_page
+from app.client.resp.xiu_xiu_ip import XiuXiuOrder, XiuXiuDataInfo
+from app.client.xiu_xiu_ip_client import query_ip_page, query_ip_info
 from app.core.exceptions import AppException
 from app.models.proxy_ip_pool import ProxyIpPool
 from app.repositories.proxy_ip_pool_repository import ProxyIpPoolRepository
@@ -101,7 +99,7 @@ class ProxyIpPoolService:
             pass
         total_page = int(total / page_size + 1)
 
-        ip_total = []
+        ip_data_total:list[XiuXiuDataInfo] = []
         for index_page in range(1,total_page+1):
             order_list:list[XiuXiuOrder]
             _,order_list = query_ip_page(index_page, page_size)
@@ -109,21 +107,19 @@ class ProxyIpPoolService:
                 continue
             for item in order_list:
                 order_id = item.iid
+                data_info = query_ip_info(order_id)
+                if data_info:
+                    ip_data_total.append(data_info)
+        if not ip_data_total:
+            return  True
 
-            for order in order_list:
-
-
-
-
-
-
-        for item in ip_total:
+        for item in ip_data_total:
             ip = item.ip
-            prot = item.prot
-            prot = item.prot
-
-
-            ip_exist = self.find_by_ip_port_user_pwd(item.ip,item.port,item.user_name,item.password)
+            port = item.socks_http.split("/")[1]
+            user_name = item.username
+            password = item.password
+            city = item.city
+            ip_exist = self.find_by_ip_port_user_pwd(ip,port,user_name,password)
             if(ip_exist):
                 #更新
                 exist_id = ip_exist.id
@@ -131,8 +127,12 @@ class ProxyIpPoolService:
             else :
                 #新增
                 save = ProxyIpPoolCreate()
-                save.ip = item.get
-                self.create()
+                save.ip = ip
+                save.port = port
+                save.user_name = user_name
+                save.password = password
+                save.city = city
+                self.create(save)
                 pass
 
 

@@ -55,3 +55,10 @@ def page_list(
 ) -> ApiResponse[PageData[ProxyIpPoolOut]]:
     data = service.page_list(page_no, page_size, keyword=keyword, usage_status=usage_status)
     return success(data)
+
+@router.get("/sync", response_model=ApiResponse[bool], summary="Page proxy IP")
+def page_list(
+        service: Annotated[ProxyIpPoolService, Depends(get_proxy_ip_pool_service)],
+) -> ApiResponse[PageData[ProxyIpPoolOut]]:
+    service.ip_pool_sync()
+    return success(True)

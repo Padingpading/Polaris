@@ -5,6 +5,19 @@ from __future__ import annotations
 from typing import Any, Optional
 
 
+def _pick(data: dict[str, Any], *keys: str) -> Any:
+    for key in keys:
+        if key in data and data.get(key) is not None:
+            return data.get(key)
+    return None
+
+
+def _to_int(value: Any) -> Optional[int]:
+    if value is None:
+        return None
+    return int(value)
+
+
 class XiuXiuOrder:
     """秀秀订单行（对接 listSearchOrder rows）。"""
 
@@ -60,41 +73,51 @@ class XiuXiuOrder:
 
 
 class XiuXiuDataInfo:
-    """秀秀 IP 详情（对接 dataInfo）。"""
+    """秀秀 IP 详情行（对接 OrderDetail rows）。"""
 
     def __init__(
         self,
+        id: Optional[int] = None,
+        ip: Optional[str] = None,
+        ip_export: Optional[str] = None,
+        is_use: Optional[int] = None,
+        location: Optional[str] = None,
+        city: Optional[str] = None,
+        records: Optional[list[Any]] = None,
+        socks_http: Optional[str] = None,
+        update_count: Optional[int] = None,
+        update_time: Optional[str] = None,
+        isp: Optional[str] = None,
+        checked: Optional[str] = None,
+        days_left: Optional[int] = None,
+        refund: Optional[int] = None,
+        cus_username: Optional[str] = None,
+        cus_password: Optional[str] = None,
+        cus_port: Optional[int] = None,
         username: Optional[str] = None,
-        end_time: Optional[str] = None,
-        game: Optional[str] = None,
         password: Optional[str] = None,
-        nodes: Optional[list[Any]] = None,
-        create_time: Optional[str] = None,
-        node_count: Optional[int] = None,
-        ip_userid: Optional[int] = None,
-        node_type: Optional[str] = None,
-        address_id: Optional[int] = None,
-        game_id: Optional[int] = None,
-        web_name: Optional[str] = None,
-        uuid: Optional[str] = None,
-        notice: Optional[str] = None,
-        state: Optional[str] = None,
-        ip_use: Optional[int] = None,
+        expire_time: Optional[str] = None,
+        end_time: Optional[str] = None,
     ) -> None:
+        self.id = id
+        self.ip = ip
+        self.ip_export = ip_export
+        self.is_use = is_use
+        self.location = location
+        self.city = city
+        self.records = records if records is not None else []
+        self.socks_http = socks_http
+        self.update_count = update_count
+        self.update_time = update_time
+        self.isp = isp
+        self.checked = checked
+        self.days_left = days_left
+        self.refund = refund
+        self.cus_username = cus_username
+        self.cus_password = cus_password
+        self.cus_port = cus_port
         self.username = username
-        self.end_time = end_time
-        self.game = game
         self.password = password
-        self.nodes = nodes if nodes is not None else []
-        self.create_time = create_time
-        self.node_count = node_count
-        self.ip_userid = ip_userid
-        self.node_type = node_type
-        self.address_id = address_id
-        self.game_id = game_id
-        self.web_name = web_name
-        self.uuid = uuid
-        self.notice = notice
-        self.state = state
-        self.ip_use = ip_use
+        self.expire_time = expire_time
+        self.end_time = end_time
 
