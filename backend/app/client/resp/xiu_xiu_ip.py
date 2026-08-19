@@ -58,5 +58,28 @@ class XiuXiuOrder:
             "ip_use": self.ip_use,
         }
 
-
 xiu_xiu_order = XiuXiuOrder
+
+class XiuXiuDataInfo:
+    """秀秀订单行（对接 listSearchOrder rows）。"""
+    def __init__(
+        self,
+        iid: str,
+        num: int,
+        game: str,
+        notes: Optional[str],
+        node_type: str,
+        stoptime: str,
+        pid: Optional[str],
+        refund: int,
+        ip_use: int,
+    ) -> None:
+        self.iid = iid
+        self.num = num
+        self.game = game
+        self.notes = notes
+        self.node_type = node_type
+        self.stoptime = stoptime
+        self.pid = pid
+        self.refund = refund
+        self.ip_use = ip_use

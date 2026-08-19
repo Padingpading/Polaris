@@ -82,3 +82,15 @@ class ProxyIpPoolRepository:
         total = self.db.scalar(count_stmt) or 0
         items = self.db.scalars(list_stmt).all()
         return items, total
+
+    def query_by_ids(self, row_ids):
+        if not row_ids or len(row_ids) == 0:
+            pass
+        stmt = select(ProxyIpPool).where(
+            ProxyIpPool.id.in_(row_ids),
+            ProxyIpPool.status == 0,
+        )
+        return self.db.scalars(stmt).all()
+
+    def find_by_ip_port_user_pwd(self, ip:str, port, user_name, pwd):
+        pass

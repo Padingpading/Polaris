@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from typing import Optional
 
+from sqlalchemy.util import format_argspec_init
+
 from app.client.resp.xiu_xiu_ip import XiuXiuOrder
 from app.client.xiu_xiu_ip_client import query_ip_page
 from app.core.exceptions import AppException
@@ -58,6 +60,12 @@ class ProxyIpPoolService:
             raise AppException("未查询到代理IP信息")
         return ProxyIpPoolOut.model_validate(row)
 
+    def query_by_ids(self,row_ids: list[int]) -> list[ProxyIpPoolOut]:
+        self.repo.query_by_ids(row_ids)
+
+    def find_by_ip_port_user_pwd(self,ip:str,port:int,user_name:str,pwd:str) -> ProxyIpPoolOut:
+        return  self.repo.find_by_ip_port_user_pwd(ip, port,user_name,pwd)
+
     def delete_by_id(self, row_id: int) -> bool:
         ok = self.repo.delete_by_id(row_id)
         if not ok:
@@ -84,21 +92,49 @@ class ProxyIpPoolService:
             page=page_no,
             page_size=page_size,
         )
-    @staticmethod
-    def ip_pool_sync() -> bool:
+
+    def ip_pool_sync(self) -> bool:
         page = 1
         page_size = 10
         total, ip_list = query_ip_page(page, page_size)
         if not total or total == 0:
             pass
         total_page = int(total / page_size + 1)
-        for index_page in range(1,total_page+1):
-            total, ip_list[XiuXiuOrder] = query_ip_page(index_page, page_size)
-            if not ip_list:
-                continue
-            for ip in ip_list:
-                print(json.dumps(ip.to_dict()))
-        pass
 
-s = ProxyIpPoolService.ip_pool_sync()
-s
+        ip_total = []
+        for index_page in range(1,total_page+1):
+            order_list:list[XiuXiuOrder]
+            _,order_list = query_ip_page(index_page, page_size)
+            if not order_list:
+                continue
+            for item in order_list:
+                order_id = item.iid
+
+            for order in order_list:
+
+
+
+
+
+
+        for item in ip_total:
+            ip = item.ip
+            prot = item.prot
+            prot = item.prot
+
+
+            ip_exist = self.find_by_ip_port_user_pwd(item.ip,item.port,item.user_name,item.password)
+            if(ip_exist):
+                #更新
+                exist_id = ip_exist.id
+                pass
+            else :
+                #新增
+                save = ProxyIpPoolCreate()
+                save.ip = item.get
+                self.create()
+                pass
+
+
+
+
