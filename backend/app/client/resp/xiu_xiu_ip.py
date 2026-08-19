@@ -58,28 +58,43 @@ class XiuXiuOrder:
             "ip_use": self.ip_use,
         }
 
-xiu_xiu_order = XiuXiuOrder
 
 class XiuXiuDataInfo:
-    """秀秀订单行（对接 listSearchOrder rows）。"""
+    """秀秀 IP 详情（对接 dataInfo）。"""
+
     def __init__(
         self,
-        iid: str,
-        num: int,
-        game: str,
-        notes: Optional[str],
-        node_type: str,
-        stoptime: str,
-        pid: Optional[str],
-        refund: int,
-        ip_use: int,
+        username: Optional[str] = None,
+        end_time: Optional[str] = None,
+        game: Optional[str] = None,
+        password: Optional[str] = None,
+        nodes: Optional[list[Any]] = None,
+        create_time: Optional[str] = None,
+        node_count: Optional[int] = None,
+        ip_userid: Optional[int] = None,
+        node_type: Optional[str] = None,
+        address_id: Optional[int] = None,
+        game_id: Optional[int] = None,
+        web_name: Optional[str] = None,
+        uuid: Optional[str] = None,
+        notice: Optional[str] = None,
+        state: Optional[str] = None,
+        ip_use: Optional[int] = None,
     ) -> None:
-        self.iid = iid
-        self.num = num
+        self.username = username
+        self.end_time = end_time
         self.game = game
-        self.notes = notes
+        self.password = password
+        self.nodes = nodes if nodes is not None else []
+        self.create_time = create_time
+        self.node_count = node_count
+        self.ip_userid = ip_userid
         self.node_type = node_type
-        self.stoptime = stoptime
-        self.pid = pid
-        self.refund = refund
+        self.address_id = address_id
+        self.game_id = game_id
+        self.web_name = web_name
+        self.uuid = uuid
+        self.notice = notice
+        self.state = state
         self.ip_use = ip_use
+
