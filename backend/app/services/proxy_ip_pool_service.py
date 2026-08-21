@@ -109,7 +109,7 @@ class ProxyIpPoolService:
                 order_id = item.iid
                 data_info = query_ip_info(order_id)
                 if data_info:
-                    ip_data_total.append(data_info)
+                    ip_data_total.extend(data_info)
         if not ip_data_total:
             return  True
 
@@ -120,20 +120,28 @@ class ProxyIpPoolService:
             password = item.password
             city = item.city
             ip_exist = self.find_by_ip_port_user_pwd(ip,port,user_name,password)
-            if(ip_exist):
-                #更新
+            if ip_exist:
+                # 更新
                 exist_id = ip_exist.id
+                update = ProxyIpPoolUpdate(
+                    id = exist_id,
+                    ip=ip or "",
+                    port=port or "0",
+                    user_name=user_name or "",
+                    password=password or "",
+                    city=city or "",)
+                self.update(update)
                 pass
-            else :
-                #新增
-                save = ProxyIpPoolCreate()
-                save.ip = ip
-                save.port = port
-                save.user_name = user_name
-                save.password = password
-                save.city = city
+            else:
+                # 新增：Pydantic 必填字段须在构造时传入
+                save = ProxyIpPoolCreate(
+                    ip=ip or "",
+                    port=port or "0",
+                    user_name=user_name or "",
+                    password=password or "",
+                    city=city or "",
+                )
                 self.create(save)
-                pass
 
 
 

@@ -121,3 +121,62 @@ class XiuXiuDataInfo:
         self.expire_time = expire_time
         self.end_time = end_time
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> XiuXiuDataInfo:
+        """把接口返回的 dict 转成对象（兼容 snake_case / camelCase）。"""
+        if not data:
+            return cls()
+        records = _pick(data, "records")
+        if records is None:
+            records = []
+        elif not isinstance(records, list):
+            records = [records]
+        return cls(
+            id=_to_int(_pick(data, "id")),
+            ip=_pick(data, "ip"),
+            ip_export=_pick(data, "ipExport", "ip_export"),
+            is_use=_to_int(_pick(data, "is_use", "isUse")),
+            location=_pick(data, "location"),
+            city=_pick(data, "city"),
+            records=records,
+            socks_http=_pick(data, "socksHttp", "socks_http"),
+            update_count=_to_int(_pick(data, "updateCount", "update_count")),
+            update_time=_pick(data, "updateTime", "update_time"),
+            isp=_pick(data, "isp"),
+            checked=_pick(data, "checked"),
+            days_left=_to_int(_pick(data, "daysLeft", "days_left")),
+            refund=_to_int(_pick(data, "refund")),
+            cus_username=_pick(data, "cus_username", "cusUsername"),
+            cus_password=_pick(data, "cus_password", "cusPassword"),
+            cus_port=_to_int(_pick(data, "cus_port", "cusPort")),
+            username=_pick(data, "username"),
+            password=_pick(data, "password"),
+            expire_time=_pick(data, "expire_time", "expireTime"),
+            end_time=_pick(data, "end_time", "endTime"),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "ip": self.ip,
+            "ipExport": self.ip_export,
+            "is_use": self.is_use,
+            "location": self.location,
+            "city": self.city,
+            "records": self.records,
+            "socksHttp": self.socks_http,
+            "updateCount": self.update_count,
+            "updateTime": self.update_time,
+            "isp": self.isp,
+            "checked": self.checked,
+            "daysLeft": self.days_left,
+            "refund": self.refund,
+            "cus_username": self.cus_username,
+            "cus_password": self.cus_password,
+            "cus_port": self.cus_port,
+            "username": self.username,
+            "password": self.password,
+            "expire_time": self.expire_time,
+            "end_time": self.end_time,
+        }
+

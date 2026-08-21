@@ -40,5 +40,5 @@ def query_ip_info(order_id: str) -> list[XiuXiuDataInfo]:
     )
     resp.raise_for_status()
     rows = resp.json().get("data", {}).get("rows") or []
-    return [XiuXiuDataInfo(**item) for item in rows]
+    return [XiuXiuDataInfo.from_dict(item) for item in rows]
 

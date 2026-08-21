@@ -9,7 +9,6 @@ from app.schemas.common import str_length
 
 
 class ProxyIpPoolCreate(BaseModel):
-    """Create proxy IP."""
 
     ip: Annotated[str, Field(default=...), str_length(1, 64, "IP长度须在1~64个字符之间")]
     port: Annotated[str, Field(default="0"), str_length(0, 64, "端口最多64个字符")]

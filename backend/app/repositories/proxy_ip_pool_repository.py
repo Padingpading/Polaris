@@ -93,4 +93,11 @@ class ProxyIpPoolRepository:
         return self.db.scalars(stmt).all()
 
     def find_by_ip_port_user_pwd(self, ip:str, port, user_name, pwd):
-        pass
+        stmt = select(ProxyIpPool).where(
+            ProxyIpPool.ip == ip,
+            ProxyIpPool.port == port,
+            ProxyIpPool.user_name == user_name,
+            ProxyIpPool.password == pwd,
+            ProxyIpPool.status == 0
+        )
+        return self.db.scalars(stmt).first()
